@@ -240,22 +240,30 @@ func printPsTable(rows []UnifiedPsRow, sortField string) {
 	fmt.Fprintln(w, "CONTEXT\tNAME\tIMAGE\tSTATE\tUPTIME\tHEALTH\tCPU %\tMEM USAGE / LIMIT")
 
 	for _, r := range rows {
-		health := r.Health
-		if r.Health == "healthy" {
-			health = "@@GREEN@@healthy@@RESET@@"
-		} else if r.Health == "unhealthy" {
-			health = "@@RED@@unhealthy@@RESET@@"
-		}
-
 		fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n",
-			r.Context, r.Name, r.Image, r.State, r.Status, health, r.CPU, r.Memory,
+			r.Context, r.Name, r.Image, r.State, r.Status, r.Health, r.CPU, r.Memory,
 		)
 	}
 	w.Flush()
 
-	out := buf.String()
-	out = strings.ReplaceAll(out, "@@GREEN@@", "\033[32m")
-	out = strings.ReplaceAll(out, "@@RED@@", "\033[31m")
-	out = strings.ReplaceAll(out, "@@RESET@@", "\033[0m")
-	fmt.Print(out)
+	lines := strings.Split(strings.TrimRight(buf.String(), "\n"), "\n")
+	if len(lines) > 0 {
+		// Print header
+		fmt.Println(lines[0])
+
+		// Print rows with color
+		for i, r := range rows {
+			if i+1 >= len(lines) {
+				break
+			}
+			line := lines[i+1]
+			if r.Health == "healthy" {
+				fmt.Printf("\033[32m%s\033[0m\n", line)
+			} else if r.Health == "unhealthy" {
+				fmt.Printf("\033[31m%s\033[0m\n", line)
+			} else {
+				fmt.Println(line)
+			}
+		}
+	}
 }
