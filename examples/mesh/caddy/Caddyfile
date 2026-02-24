@@ -1,0 +1,15 @@
+
+http://service-a.localhost {
+    reverse_proxy service-a:80
+}
+
+http://service-b.localhost {
+    reverse_proxy service-b:80
+}
+
+http://service-c.localhost {
+    reverse_proxy service-c:80
+}
+http://service-d.localhost {
+    reverse_proxy service-d:80
+}

@@ -1,0 +1,12 @@
+# for RHEL Based system, you might need to enable the iptables modules
+# sudo modprobe ip_tables
+# sudo modprobe iptable_filter
+# sudo modprobe xt_mark
+
+contexts:
+  default:
+    profiles:
+      - service-a
+  offload-server: # Replace this with another real context you have locally
+    profiles:
+      - service-b

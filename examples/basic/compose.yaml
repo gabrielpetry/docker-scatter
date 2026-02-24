@@ -1,0 +1,19 @@
+services:
+  service-a:
+    hostname: service-a
+    image: traefik/whoami
+    profiles: ["service-a"]
+  service-a-curl:
+    image: alpine/curl
+    command: tail -f /dev/null
+    profiles: ["service-a"]
+
+  service-b:
+    hostname: service-b
+    image: traefik/whoami
+    profiles: ["service-b"]
+
+  service-b-curl:
+    image: alpine/curl
+    command: tail -f /dev/null
+    profiles: ["service-b"]

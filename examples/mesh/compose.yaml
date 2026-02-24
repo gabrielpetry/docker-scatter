@@ -1,0 +1,41 @@
+volumes:
+  caddy_data:
+  caddy_config:
+
+services:
+  caddy:
+    image: caddy:latest
+    profiles: [traefik]
+    ports:
+      - 30080:80
+    volumes:
+      - ./caddy:/etc/caddy:z
+    restart: unless-stopped
+
+  service-a:
+    hostname: h-service-a
+    image: ghcr.io/octarect/hostname:latest
+    profiles: ["service-a"]
+    expose: [80]
+
+
+  service-b:
+    hostname: h-service-b
+    image: ghcr.io/octarect/hostname:latest
+    profiles: ["service-b"]
+    expose: [80]
+
+
+  service-c:
+    hostname: h-service-c
+    image: ghcr.io/octarect/hostname:latest
+    profiles: ["service-c"]
+    expose: [80]
+
+
+  service-d:
+    hostname: h-service-d
+    image: ghcr.io/octarect/hostname:latest
+    profiles: ["service-d"]
+    expose: [80]
+

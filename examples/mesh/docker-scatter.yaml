@@ -1,0 +1,23 @@
+# for RHEL Based system, you might need to enable the iptables modules
+# sudo depmod -av | grep 'ip_tables\|iptable_filter\|xt_mark'
+# sudo modprobe ip_tables
+# sudo modprobe iptable_filter
+# sudo modprobe xt_mark
+# sudo modprobe iptable_nat
+# This example uses caddy, traefik and nginx are not yet supported due to how they resolve hostnames
+
+mesh:
+  enable: true
+  context: default
+  bind_port: 30124
+ 
+contexts:
+  default:
+    profiles:
+      - traefik
+      - service-a
+  offload-server: # Replace this with another real context you have locally
+    profiles:
+      - service-b
+      - service-c
+      - service-d
